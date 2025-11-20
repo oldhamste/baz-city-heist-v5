@@ -1,45 +1,96 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>BAZ City Heist Overlay</title>
+  <meta charset="UTF-8" />
+  <title>Baz City Heist Overlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
+  <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
   <div id="overlay-root">
-    <!-- Top banner -->
-    <img id="bannerArea"
-         src="banners/starting_soon.png"
-         alt="Banner"
-         class="banner-main" />
+    <!-- TOP BANNER -->
+    <div id="top-banner">
+      <div id="banner-text">
+        BAZ CITY HEIST · Type !join in chat · Gifts = more power · Follow @baz7891
+      </div>
+    </div>
 
-    <!-- Left HUD (game info, bars, crew) -->
-    <div id="hud-left" class="hud-panel hud-left"></div>
+    <!-- MAIN AREA -->
+    <div id="main-layout">
+      <!-- LEFT: GAME SLOT -->
+      <div id="game-slot">
+        <div id="game-placeholder">
+          GAME AREA<br />
+          Put your main game capture behind this overlay in OBS.<br />
+          Overlay UI sits on the right.
+        </div>
+      </div>
 
-    <!-- Right HUD (gift leaderboard, chat highlights) -->
-    <div id="hud-right" class="hud-panel hud-right"></div>
+      <!-- RIGHT: BAZ + HUD + LISTS -->
+      <div id="side-column">
+        <!-- SMALLER BAZ CAM -->
+        <div id="baz-cam">
+          <div id="baz-face"></div>
+          <div id="baz-caption">Baz is loading the next heist…</div>
+        </div>
 
-    <!-- Center background effects layer -->
-    <div id="bg-layer" class="bg-layer"></div>
+        <!-- HUD -->
+        <div id="hud-panel">
+          <div class="hud-row">
+            <span class="label">Phase</span>
+            <span id="phaseText" class="value">Idle</span>
+          </div>
+          <div class="hud-row">
+            <span class="label">Mode</span>
+            <span id="modeText" class="value">Standard</span>
+          </div>
 
-    <!-- BAZ virtual facecam -->
-    <img id="bazAvatar"
-         src="baz/avatars/baz_idle.png"
-         alt="BAZ"
-         class="baz-avatar" />
+          <div class="bar-row">
+            <span class="label">Loot</span>
+            <div class="bar">
+              <div id="lootFill" class="bar-fill"></div>
+            </div>
+            <span id="lootValue" class="value">0 / 100</span>
+          </div>
+
+          <div class="bar-row">
+            <span class="label">Heat</span>
+            <div class="bar">
+              <div id="heatFill" class="bar-fill bar-heat"></div>
+            </div>
+            <span id="heatValue" class="value">0 / 100</span>
+          </div>
+
+          <div class="hud-row">
+            <span class="label">Success</span>
+            <span id="successText" class="value">–</span>
+          </div>
+        </div>
+
+        <!-- CREW + TOP GIFTERS -->
+        <div id="lists-panel">
+          <div class="list-block">
+            <div class="list-title">Crew / Chat</div>
+            <ul id="crewList"></ul>
+          </div>
+
+          <div class="list-block">
+            <div class="list-title">Top Gifters</div>
+            <ul id="giftersList"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div id="footer-strip">
+      <span>
+        Commands: !join · !hack · !smash · !rush · !sneak · 200+ coins = control BAZ · Follow @baz7891
+      </span>
+    </div>
   </div>
 
-  <!-- Audio elements for sound engine -->
-  <audio id="snd-planning" src="audio/phase_planning.mp3"></audio>
-  <audio id="snd-action" src="audio/phase_action.mp3"></audio>
-  <audio id="snd-escape" src="audio/phase_escape.mp3"></audio>
-  <audio id="snd-win" src="audio/result_win.mp3"></audio>
-  <audio id="snd-fail" src="audio/result_fail.mp3"></audio>
-  <audio id="snd-gift-lion" src="audio/gift_lion.mp3"></audio>
-  <audio id="snd-gift-universe" src="audio/gift_universe.mp3"></audio>
-  <audio id="snd-banner" src="audio/banner_transition.mp3"></audio>
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script type="module" src="overlay.js"></script>
+  <script src="overlay.js"></script>
 </body>
 </html>

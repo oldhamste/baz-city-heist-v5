@@ -1,115 +1,261 @@
-/* Root container */
-.overlay-root {
-  position: relative;
-  width: 1920px;
-  height: 1080px;
-  overflow: hidden;
-  font-family: "Roboto", system-ui, sans-serif;
+/* Global */
+* {
+  box-sizing: border-box;
 }
 
-/* Top banner */
-.top-banner-row {
-  position: absolute;
-  top: 20px;
-  left: 0;
-  right: 0;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #ffffff;
+}
+
+#overlay-root {
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   pointer-events: none;
 }
 
-.banner-canvas {
-  width: 600px;
-  height: 80px;
-  max-width: 70%;
-}
-
-/* Main layout: HUD | GAME | GIFTERS */
-.main-layout {
-  position: absolute;
-  top: 130px;
-  bottom: 60px;
-  left: 60px;
-  right: 60px;
-  display: flex;
-  align-items: center;
-  gap: 40px;
-}
-
-/* Left & right sidebars */
-.hud-column,
-.leaderboard-column {
-  flex: 0 0 360px;      /* narrower than before */
-  height: 720px;        /* cards are tall but not full-screen */
-  display: flex;
-}
-
-/* Let existing HUD/leaderboard components size inside these boxes */
-#hud-root > * ,
-#leaderboard-root > * {
-  width: 100%;
-  height: 100%;
-}
-
-/* Middle game column */
-.game-column {
-  flex: 1 1 auto;
-  height: 760px;
+/* Top banner */
+#top-banner {
+  height: 9vh;
+  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 20px;
+  background: linear-gradient(90deg, rgba(180, 0, 255, 0.7), rgba(0, 180, 255, 0.7));
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Temporary placeholder for game area */
+#banner-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+}
+
+/* Main layout */
+#main-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 72%) minmax(0, 28%);
+  gap: 10px;
+  padding: 10px 10px 5px 10px;
+}
+
+/* Game slot */
+#game-slot {
+  position: relative;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+}
+
 #game-placeholder {
-  width: 100%;
-  height: 100%;
-  max-width: 1050px;
-  border-radius: 32px;
-  border: 2px solid rgba(0, 255, 200, 0.25);
-  background: radial-gradient(circle at top, rgba(0,0,0,0.2), rgba(0,0,0,0.8));
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  position: absolute;
+  inset: 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Side column */
+#side-column {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 32px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  gap: 8px;
+}
+
+/* Smaller Baz cam */
+#baz-cam {
+  flex: 0 0 20vh;
+  min-height: 150px;
+  border-radius: 18px;
+  padding: 8px;
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.9));
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#baz-face {
+  flex: 1;
+  border-radius: 14px;
+  background-image: url("./assets/baz/BAZ_FACE_IDLE.png");
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+}
+
+#baz-caption {
+  font-size: 0.9rem;
   text-align: center;
+  opacity: 0.9;
 }
 
-#game-placeholder span {
-  display: block;
-  margin-top: 12px;
-  font-size: 16px;
-  letter-spacing: normal;
-  opacity: 0.75;
+/* Baz mood / talking */
+.baz-hype #baz-face {
+  animation: bazPulse 1s infinite;
+  box-shadow: 0 0 22px rgba(0, 255, 200, 0.7);
 }
 
-/* Baz camera frame bottom-left */
-.baz-cam-frame {
+.baz-angry #baz-face {
+  animation: bazShake 0.4s infinite;
+  box-shadow: 0 0 22px rgba(255, 80, 80, 0.8);
+}
+
+.baz-talking #baz-face {
+  background-image: url("./assets/baz/BAZ_FACE_TALK.png");
+  animation: bazTalkBob 0.6s infinite;
+}
+
+@keyframes bazPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+@keyframes bazShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes bazTalkBob {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+/* HUD */
+#hud-panel {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  border-radius: 16px;
+  background: rgba(5, 5, 15, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.85rem;
+}
+
+.hud-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.value {
+  font-weight: 600;
+}
+
+/* Bars */
+.bar-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 5px;
+  align-items: center;
+}
+
+.bar {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.bar-fill {
   position: absolute;
-  left: 40px;
-  bottom: 40px;
-  width: 260px;
-  height: 150px;
-  border-radius: 24px;
-  border: 2px solid rgba(0, 255, 255, 0.35);
-  background: rgba(0, 0, 0, 0.7);
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #00ffea, #00a6ff);
+  transition: width 0.3s ease-out;
+}
+
+.bar-heat {
+  background: linear-gradient(90deg, #ff5f5f, #ffb300);
+}
+
+/* Lists panel */
+#lists-panel {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 6px;
+}
+
+.list-block {
+  border-radius: 16px;
+  padding: 6px 8px;
+  background: rgba(5, 5, 15, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
-.baz-cam-label {
-  position: absolute;
-  left: 16px;
-  bottom: 12px;
-  font-size: 18px;
-  letter-spacing: 0.2em;
+.list-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 3px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-/* If you already draw the avatar/camera in baz_avatar.js, it can render into this box */
+#crewList,
+#giftersList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.78rem;
+  overflow-y: auto;
+}
+
+#crewList li,
+#giftersList li {
+  padding: 1px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+/* Footer */
+#footer-strip {
+  height: 7vh;
+  min-height: 40px;
+  padding: 4px 14px;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 40, 0.9));
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
