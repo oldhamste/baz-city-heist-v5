@@ -1,0 +1,286 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #02030a;
+  color: #f5f5f5;
+  overflow: hidden;
+}
+
+#overlay-root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at top, #11172a 0%, #02030a 60%, #000 100%);
+  overflow: hidden;
+}
+
+/* Banner */
+.banner-main {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38vw;
+  max-width: 420px;
+  filter: drop-shadow(0 0 18px rgba(0, 255, 200, 0.7));
+  z-index: 10;
+}
+
+/* BAZ Avatar */
+.baz-avatar {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  width: 220px;
+  filter: drop-shadow(0 0 14px rgba(255, 105, 180, 0.8));
+  z-index: 8;
+}
+
+/* HUD panels */
+
+.hud-panel {
+  position: absolute;
+  top: 90px;
+  bottom: 30px;
+  width: 20vw;
+  min-width: 260px;
+  background: linear-gradient(145deg, rgba(5,5,10,0.95), rgba(5,0,25,0.88));
+  border: 1px solid rgba(0,255,200,0.35);
+  box-shadow:
+    0 0 20px rgba(0,255,200,0.25),
+    inset 0 0 18px rgba(0,0,0,0.9);
+  border-radius: 18px;
+  padding: 14px 14px 18px;
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 6;
+}
+
+.hud-left {
+  left: 16px;
+}
+
+.hud-right {
+  right: 16px;
+}
+
+/* HUD content */
+
+.hud-title {
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  color: #7cf4ff;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.hud-subtitle {
+  font-size: 0.8rem;
+  color: #ff8ad9;
+  margin-bottom: 12px;
+}
+
+.hud-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  margin-bottom: 6px;
+}
+
+.hud-row-label {
+  opacity: 0.7;
+}
+
+.hud-row-value {
+  font-weight: 600;
+}
+
+.hud-crew-list {
+  margin-top: 8px;
+  margin-bottom: 10px;
+  max-height: 25vh;
+  overflow-y: auto;
+  font-size: 0.78rem;
+}
+
+.hud-crew-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Bars */
+
+.bar {
+  position: relative;
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #111, #222);
+  overflow: hidden;
+  margin: 4px 0 10px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.85);
+}
+
+.bar-label {
+  font-size: 0.75rem;
+  margin-bottom: 2px;
+  opacity: 0.75;
+}
+
+.bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  transition: width 0.35s ease-out;
+}
+
+.bar-fill-loot {
+  background: linear-gradient(90deg, #23f1ff, #7bffb5);
+  box-shadow: 0 0 12px rgba(124, 255, 221, 0.9);
+}
+
+.bar-fill-heat {
+  background: linear-gradient(90deg, #ff4500, #ff1744);
+  box-shadow: 0 0 12px rgba(255, 80, 80, 0.9);
+}
+
+/* Gift leaderboard */
+
+.leaderboard-header {
+  font-size: 0.9rem;
+  color: #ffe375;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.leaderboard-list {
+  margin-top: 4px;
+  font-size: 0.78rem;
+}
+
+.leaderboard-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.leaderboard-name {
+  max-width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leaderboard-score {
+  color: #7cf4ff;
+  font-weight: 600;
+}
+
+/* Background effect layer */
+
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(0,255,200,0.10) 0, transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(255,120,200,0.10) 0, transparent 55%);
+  mix-blend-mode: screen;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Mode overlays via classes */
+
+.bg-layer.firestorm {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255,120,0,0.28) 0, transparent 60%),
+    radial-gradient(circle at 80% 80%, rgba(255,20,0,0.32) 0, transparent 60%);
+}
+
+.bg-layer.cyber {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(0,200,255,0.25) 0, transparent 65%),
+    repeating-linear-gradient(120deg, rgba(0,255,200,0.18) 0, rgba(0,255,200,0.18) 2px, transparent 3px, transparent 6px);
+}
+
+.bg-layer.casino {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255,215,0,0.35) 0, transparent 65%),
+    radial-gradient(circle at 80% 80%, rgba(255,105,180,0.28) 0, transparent 60%);
+}
+
+.bg-layer.stealth_ops {
+  background: radial-gradient(circle at center, rgba(60,60,80,0.5) 0, #000 70%);
+}
+
+/* Borders from earlier versions */
+
+body.fireBorder {
+  box-shadow: 0 0 20px 10px rgba(255, 60, 0, 0.9) inset;
+  animation: firePulse 1s infinite;
+}
+
+body.casinoBorder {
+  box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.9) inset;
+}
+
+body.cyberBorder {
+  box-shadow: 0 0 20px 10px rgba(0, 255, 255, 0.9) inset;
+  animation: cyberGlitch 0.25s infinite;
+}
+
+@keyframes firePulse {
+  0% { box-shadow: 0 0 10px 4px rgba(255,80,0,0.7) inset; }
+  50% { box-shadow: 0 0 26px 14px rgba(255,40,0,1) inset; }
+  100% { box-shadow: 0 0 10px 4px rgba(255,80,0,0.7) inset; }
+}
+
+@keyframes cyberGlitch {
+  0% { filter: hue-rotate(150deg); }
+  100% { filter: hue-rotate(200deg); }
+}
+
+/* Glitch effect for Universe */
+
+.glitchEffect {
+  animation: screenGlitch 0.3s infinite;
+}
+
+@keyframes screenGlitch {
+  0% { transform: translateX(0) skewX(0deg); }
+  33% { transform: translateX(-3px) skewX(5deg); }
+  66% { transform: translateX(3px) skewX(-5deg); }
+  100% { transform: translateX(0) skewX(0deg); }
+}
+
+/* Responsive tweaks (TikTok vertical safe area) */
+
+@media (max-width: 900px) {
+  .hud-panel {
+    width: 34vw;
+  }
+  .banner-main {
+    width: 68vw;
+  }
+  .baz-avatar {
+    width: 180px;
+  }
+}

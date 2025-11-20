@@ -1,0 +1,1 @@
+export function bazTalkPulse(){}; export function bazSetMood(m){};

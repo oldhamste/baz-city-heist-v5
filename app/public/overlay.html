@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>BAZ City Heist Overlay</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="overlay-root">
+    <!-- Top banner -->
+    <img id="bannerArea"
+         src="banners/starting_soon.png"
+         alt="Banner"
+         class="banner-main" />
+
+    <!-- Left HUD (game info, bars, crew) -->
+    <div id="hud-left" class="hud-panel hud-left"></div>
+
+    <!-- Right HUD (gift leaderboard, chat highlights) -->
+    <div id="hud-right" class="hud-panel hud-right"></div>
+
+    <!-- Center background effects layer -->
+    <div id="bg-layer" class="bg-layer"></div>
+
+    <!-- BAZ virtual facecam -->
+    <img id="bazAvatar"
+         src="baz/avatars/baz_idle.png"
+         alt="BAZ"
+         class="baz-avatar" />
+  </div>
+
+  <!-- Audio elements for sound engine -->
+  <audio id="snd-planning" src="audio/phase_planning.mp3"></audio>
+  <audio id="snd-action" src="audio/phase_action.mp3"></audio>
+  <audio id="snd-escape" src="audio/phase_escape.mp3"></audio>
+  <audio id="snd-win" src="audio/result_win.mp3"></audio>
+  <audio id="snd-fail" src="audio/result_fail.mp3"></audio>
+  <audio id="snd-gift-lion" src="audio/gift_lion.mp3"></audio>
+  <audio id="snd-gift-universe" src="audio/gift_universe.mp3"></audio>
+  <audio id="snd-banner" src="audio/banner_transition.mp3"></audio>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="overlay.js"></script>
+</body>
+</html>
