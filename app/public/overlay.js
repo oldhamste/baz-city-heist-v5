@@ -1,127 +1,49 @@
-import { bazTalkPulse, bazSetMood } from "./baz_avatar.js";
-import {
-  setBanner,
-  applyModeEffects,
-  giftBanner,
-  applyBorderEffects,
-  forceBannerByChat,
-  syncBannerToMood,
-} from "./banner_engine.js";
-import { initHUD, updateHUD } from "./components/hud.js";
-import { initBars, updateBars } from "./components/bars.js";
-import { initBackgrounds, updateBackgrounds } from "./components/backgrounds.js";
-import {
-  initLeaderboard,
-  updateLeaderboardFromGift,
-  updateLeaderboardFromState,
-} from "./components/leaderboard.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Baz City Heist Overlay</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Background is drawn in CSS -->
+  <div class="overlay-root">
 
-const socket = io();
+    <!-- Top banner row -->
+    <div class="top-banner-row">
+      <canvas id="banner-canvas" class="banner-canvas"></canvas>
+    </div>
 
-let lastPhase = null;
-let lastResult = null;
+    <!-- Main 3-column layout: HUD | GAME | TOP GIFTERS -->
+    <div class="main-layout">
+      <!-- Left: HUD -->
+      <div id="hud-root" class="hud-column"></div>
 
-function playPhaseSound(phase) {
-  let id = null;
-  if (phase === "planning") id = "snd-planning";
-  else if (phase === "action") id = "snd-action";
-  else if (phase === "escape") id = "snd-escape";
-  if (!id) return;
-  const el = document.getElementById(id);
-  if (el) {
-    el.currentTime = 0;
-    el.play().catch(() => {});
-  }
-}
+      <!-- Middle: game area (for now just a placeholder) -->
+      <div class="game-column">
+        <div id="game-placeholder">
+          HEIST GAME VIEW
+          <span>(this is the space the actual game will use next update)</span>
+        </div>
+      </div>
 
-function playResultSound(result) {
-  let id = null;
-  if (result === "win") id = "snd-win";
-  else if (result === "fail") id = "snd-fail";
-  if (!id) return;
-  const el = document.getElementById(id);
-  if (el) {
-    el.currentTime = 0;
-    el.play().catch(() => {});
-  }
-}
+      <!-- Right: Top Gifters -->
+      <div id="leaderboard-root" class="leaderboard-column"></div>
+    </div>
 
-document.addEventListener("DOMContentLoaded", () => {
-  initHUD();
-  initBars();
-  initBackgrounds();
-  initLeaderboard();
-  setBanner("starting_soon");
-});
+    <!-- Bottom-left: Baz camera frame -->
+    <div class="baz-cam-frame">
+      <div class="baz-cam-label">BAZ</div>
+    </div>
+  </div>
 
-socket.on("city_heist_state", (state) => {
-  if (!state) return;
-
-  // BAZ reacts
-  bazTalkPulse();
-  const mode = state.heistMode || "standard";
-  switch (mode) {
-    case "mayhem":
-    case "firestorm":
-      bazSetMood("angry");
-      break;
-    case "cyber":
-      bazSetMood("cyber");
-      break;
-    case "stealth_ops":
-      bazSetMood("stealth");
-      break;
-    case "casino":
-      bazSetMood("laugh");
-      break;
-    default:
-      bazSetMood("idle");
-      break;
-  }
-
-  // Mode + borders + background
-  applyModeEffects(mode);
-  applyBorderEffects(mode);
-  updateBackgrounds(state);
-
-  // Banners by phase / result
-  const phase = state.phase || "idle";
-  if (phase !== lastPhase) {
-    playPhaseSound(phase);
-    if (phase === "planning") setBanner("heist_incoming");
-    else if (phase === "action") setBanner("loading_baz_exe");
-    else if (phase === "escape") setBanner("baz_cooking");
-    lastPhase = phase;
-  }
-
-  const result = state.result || null;
-  if (result && result !== lastResult) {
-    playResultSound(result);
-    if (result === "win") setBanner("heist_success", 5000);
-    if (result === "fail") setBanner("heist_failed", 5000);
-    lastResult = result;
-  }
-
-  // HUD + bars + leaderboard
-  updateHUD(state);
-  updateBars(state);
-  updateLeaderboardFromState(state);
-});
-
-// Gift events
-socket.on("tiktok_gift", (gift) => {
-  if (!gift) return;
-  giftBanner(gift.giftName || "");
-  updateLeaderboardFromGift(gift);
-});
-
-// Chat commands (e.g. !banner hype | !banner baz | !banner ldn)
-socket.on("chat_command", (cmd) => {
-  if (!cmd) return;
-  forceBannerByChat(cmd);
-});
-
-// BAZ mood sync -> banner filter
-socket.on("baz_mood", (mood) => {
-  syncBannerToMood(mood);
-});
+  <!-- Existing scripts -->
+  <script src="components/backgrounds.js"></script>
+  <script src="components/bars.js"></script>
+  <script src="banner_engine.js"></script>
+  <script src="baz_avatar.js"></script>
+  <script src="components/hud.js"></script>
+  <script src="components/leaderboard.js"></script>
+  <script src="overlay.js"></script>
+</body>
+</html>
